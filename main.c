@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 
     // continue prompting unless user enters 0
     int command = -1;
-    char* filename;
+    char* filename = (char*) malloc(255 * sizeof(char));
     while (command != 0) {
         printf("> Enter a number command 1-3 or 0 to exit: ");
         scanf("%d", &command);
@@ -41,7 +41,9 @@ int main(int argc, char** argv) {
             case 2:
                 printf("> Enter filename: ");
                 scanf("%s", filename);
+                printf("%s\n", argv[1]);
                 loadFile(filename, universe);
+                
                 printUniverse(universe);
                 break;
 
