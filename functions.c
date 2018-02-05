@@ -126,6 +126,7 @@ void step(UNIV* universe) {
     // copy universe info for analysis
     temp -> rows = universe -> rows;
     temp -> cols = universe -> cols;
+    temp -> cells = (char*) malloc (size * sizeof(char));
     memcpy(temp -> cells, universe -> cells, size * sizeof(char));
 
     //printf("%d %d %c %c\n", temp -> rows, temp -> cols, temp -> cells[0], temp -> cells[1]);
@@ -134,8 +135,8 @@ void step(UNIV* universe) {
     int i = 0;
     for (; i < size; i++) {
 
-        //printf("temp\n");
-        //printUniverse(temp);
+        //printf("universe\n");
+        //printUniverse(universe);
 
         // count live neighbors
         int neighCount = countNeigh(temp, i);
@@ -158,6 +159,6 @@ void step(UNIV* universe) {
             }
         }
     }
-
+    free(temp -> cells);
     free(temp);
 }

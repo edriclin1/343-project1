@@ -27,7 +27,11 @@ int main(int argc, char** argv) {
     char* filename = (char*) malloc(255 * sizeof(char));
     while (command != 0) {
         printf("> Enter a number command 1-3 or 0 to exit: ");
-        scanf("%d", &command);
+
+        // if command not an integer
+        if (scanf("%d", &command) < 1) {
+            command = -1;
+        }
 
         switch (command) {
 
@@ -41,7 +45,6 @@ int main(int argc, char** argv) {
             case 2:
                 printf("> Enter filename: ");
                 scanf("%s", filename);
-                printf("%s\n", argv[1]);
                 loadFile(filename, universe);
                 
                 printUniverse(universe);
@@ -63,6 +66,7 @@ int main(int argc, char** argv) {
             // invalid command
             default:
                 printf("> Invalid command entered.\n");
+                //printf("_____%d______\n", command);
                 break;
         }
         printf("--------------------------\n");
