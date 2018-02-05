@@ -81,7 +81,9 @@ void saveFile(char* filename, UNIV* universe) {
 }
 
 // analyze neighbors and store info into stats array [total], [alive], [dead]
-void countNeigh(UNIV* universe, int pos, int* stats) {
+int countNeigh(UNIV* universe, int pos) {
+    // neighbor count
+    int neighCount = 0;
 
     // universe size
     int size = universe -> rows * universe -> cols;
@@ -106,44 +108,43 @@ void countNeigh(UNIV* universe, int pos, int* stats) {
 
             // check if cell is alive
             if (universe -> cells[neigh[i]] == 'O') {
-                stats[0]++;
-                stats[1]++;
-            }
-
-            // check if cell is dead
-            if (universe -> cells[neigh[i]] == 'X') {
-                stats[0]++;
-                stats[2]++;
+                neighCount++;
             }
         }
     }
+    return neighCount;
 }
 
 // take one step forward in universe simulation
 void step(UNIV* universe) {
-    UNIV* temp = (UNIV*) malloc(sizeof(universe));
-    
-    // copy universe info for analysis
-    *temp = *universe;
-
-    //printf("%d %d %c %c\n", temp -> rows, temp -> cols, temp -> cells[0], temp -> cells[1]);
 
     // universe size
-    int size = temp -> rows * temp -> cols;
+    int size = universe -> rows * universe -> cols;
+
+    UNIV* temp = (UNIV*) malloc(sizeof(UNIV));
+    
+    // copy universe info for analysis
+    temp -> rows = universe -> rows;
+    temp -> cols = universe -> cols;
+    memcpy(temp -> cells, universe -> cells, size * sizeof(char));
+
+    //printf("%d %d %c %c\n", temp -> rows, temp -> cols, temp -> cells[0], temp -> cells[1]);
 
     // check each cells neighbors and change original universe accordingly
     int i = 0;
     for (; i < size; i++) {
-        
-        // count neighbors of occupied cells
-        int stats[3] = { 0 };
-        countNeigh(temp, i, stats);
+
+        //printf("temp\n");
+        //printUniverse(temp);
+
+        // count live neighbors
+        int neighCount = countNeigh(temp, i);
 
         // if cell is live
         if(temp -> cells[i] == 'O') {
 
             // live cells with less than 2 or more than 3 neighbors die
-            if (stats[0] < 2 || stats[0] > 3) {
+            if (neighCount < 2 || neighCount > 3) {
                 universe -> cells[i] = 'X';
             }
         }
@@ -152,7 +153,7 @@ void step(UNIV* universe) {
         else if (temp -> cells[i] == 'X') {
         
             // dead cells with 3 live neighbors become live cells
-            if (stats[1] == 3) {
+            if (neighCount == 3) {
                 universe -> cells[i] = 'O';
             }
         }

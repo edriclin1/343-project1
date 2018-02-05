@@ -12,5 +12,5 @@ typedef struct universe UNIV;
 void printUniverse(UNIV* universe);
 void loadFile(char* filename, UNIV* universe);
 void saveFile(char* filename, UNIV* universe);
-void countNeigh(UNIV* universe, int pos, int* stats);
+int countNeigh(UNIV* universe, int pos);
 void step(UNIV* universe);

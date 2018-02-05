@@ -65,11 +65,11 @@ int main(int argc, char** argv) {
                 printf("> Invalid command entered.\n");
                 break;
         }
-    printf("--------------------------\n");
-    printf("    1: Step forward\n");
-    printf("    2: Load from file\n");
-    printf("    3: Save to file\n");
-    printf("    0: Exit\n");
-    printf("--------------------------\n");
+        printf("--------------------------\n");
+        printf("    1: Step forward\n");
+        printf("    2: Load from file\n");
+        printf("    3: Save to file\n");
+        printf("    0: Exit\n");
+        printf("--------------------------\n");
     }
 }
