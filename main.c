@@ -29,7 +29,8 @@ int main(int argc, char** argv) {
         printf("> Enter a number command 1-3 or 0 to exit: ");
 
         // if command not an integer
-        if (scanf("%d", &command) < 1) {
+        if (scanf("%d", &command) != 1) {
+            while(getchar() != '\n');
             command = -1;
         }
 
@@ -66,7 +67,6 @@ int main(int argc, char** argv) {
             // invalid command
             default:
                 printf("> Invalid command entered.\n");
-                //printf("_____%d______\n", command);
                 break;
         }
         printf("--------------------------\n");
