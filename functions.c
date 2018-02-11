@@ -1,6 +1,19 @@
 #include "functions.h"
 
-// print current board
+/**
+* Functions for Game of Life. Used to print, step, load, and
+* save the game universe.
+* 
+* @author Edric Lin
+* @author Austin Maley
+* @version 2/10/2018
+*/
+
+/**
+* Print the current universe.
+*
+* @param universe the universe to print
+*/
 void printUniverse(UNIV* universe) {
 
     // row * (number of columns) + column = string position in array
@@ -17,7 +30,11 @@ void printUniverse(UNIV* universe) {
     printf("\n");
 }
 
-// load world info from file
+/**
+* Load universe from file.
+*
+* @param universe the universe to load
+*/
 void loadFile(char* filename, UNIV* universe) {
 
     // create file pointer
@@ -53,7 +70,11 @@ void loadFile(char* filename, UNIV* universe) {
     fclose(in);
 }
 
-// save world info to file
+/**
+* Save universe to file.
+*
+* @param universe the universe to save
+*/
 void saveFile(char* filename, UNIV* universe) {
 
     // create file pointer
@@ -80,7 +101,13 @@ void saveFile(char* filename, UNIV* universe) {
     fclose(out);
 }
 
-// analyze neighbors and store info into stats array [total], [alive], [dead]
+/**
+* Count number of live neighbors of a universe position
+*
+* @param universe the universe being simulated
+* @param pos the position in the universe array to look at
+* @return number of live neighbors of position
+*/
 int countNeigh(UNIV* universe, int pos) {
     // neighbor count
     int neighCount = 0;
@@ -91,23 +118,36 @@ int countNeigh(UNIV* universe, int pos) {
     // array of possible neighbors
     int neigh[8];
     neigh[0] = pos - universe -> cols - 1; // up left
-    neigh[1] = pos - universe -> cols; // up
-    neigh[2] = pos - universe -> cols + 1; // up right
-    neigh[3] = pos - 1; // left
-    neigh[4] = pos + 1; // right
-    neigh[5] = pos + universe -> cols - 1; // down left
-    neigh[6] = pos + universe -> cols; // down
+    neigh[1] = pos - 1; // left
+    neigh[2] = pos + universe -> cols - 1; // down left
+    neigh[3] = pos - universe -> cols; // up
+    neigh[4] = pos + universe -> cols; // down
+    neigh[5] = pos - universe -> cols + 1; // up right
+    neigh[6] = pos + 1; // right
     neigh[7] = pos + universe -> cols + 1; // down right
 
+    // check all neighbors positions if not an edge cell
+    int start = 0;
+    int end = 7;
+
+    // left edge cell, dont check left neighbors
+    if (pos % universe -> cols == 0) {
+        start = 3;
+    }
+
+    // right edge cell, don't check right neighbors
+    if (pos % universe -> cols == universe -> cols - 1) {
+        end = 4;
+    }
+
     // check neighbor content and store info
-    int i = 0;
-    for (; i < 8; i++) {
+    for (; start <= end; start++) {
 
         // check if neighbor pos is within cells array
-        if (neigh[i] >= 0 && neigh[i] < size) {
+        if (neigh[start] >= 0 && neigh[start] < size) {
 
             // check if cell is alive
-            if (universe -> cells[neigh[i]] == 'O') {
+            if (universe -> cells[neigh[start]] == 'O') {
                 neighCount++;
             }
         }
@@ -115,7 +155,11 @@ int countNeigh(UNIV* universe, int pos) {
     return neighCount;
 }
 
-// take one step forward in universe simulation
+/**
+* Take one step forward in universe simulation.
+*
+* @param universe the universe to step
+*/
 void step(UNIV* universe) {
 
     // universe size
@@ -136,10 +180,11 @@ void step(UNIV* universe) {
     for (; i < size; i++) {
 
         //printf("universe\n");
-        //printUniverse(universe);
+        //printUniverse(temp);
 
         // count live neighbors
         int neighCount = countNeigh(temp, i);
+        //printf("_____num neigh %d: %d______\n", i, neighCount);
 
         // if cell is live
         if(temp -> cells[i] == 'O') {
@@ -151,7 +196,7 @@ void step(UNIV* universe) {
         }
 
         // if cell is dead
-        else if (temp -> cells[i] == 'X') {
+        else {
         
             // dead cells with 3 live neighbors become live cells
             if (neighCount == 3) {

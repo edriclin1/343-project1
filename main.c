@@ -1,5 +1,20 @@
 #include "functions.h"
 
+/**
+* Main to run Game of Life. Takes user input 
+* to step, load, save and exit universe simulation.
+* 
+* @author Edric Lin
+* @author Austin Maley
+* @version 2/10/2018
+*/
+
+/**
+* Runs game of life simulation. 
+*
+* @param argc number of command line arguments
+* @param argv command line arguments
+*/
 int main(int argc, char** argv) {
 
     // if not 2 arguments, error
