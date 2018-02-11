@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 
         // if command not an integer
         if (scanf("%d", &command) != 1) {
-            while(getchar() != '\n');
+            while(getchar() != '\n'); // https://stackoverflow.com/questions/1716013/why-is-scanf-causing-infinite-loop-in-this-code
             command = -1;
         }
 
